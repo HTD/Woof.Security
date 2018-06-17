@@ -24,7 +24,7 @@ namespace Woof.SecurityEx {
         /// <param name="organization">Organization.</param>
         /// <param name="password">Password for pfx file, default "woof".</param>
         /// <param name="leaveFiles">If true, intermediate files won't be deleted.</param>
-        /// <returns></returns>
+        /// <returns>True if successfull.</returns>
         public static bool CreateSelfSignedRootCA(string name, string organization, string password = "woof", bool leaveFiles = false) {
             try {
                 var openSslCommands = new[] {
@@ -50,7 +50,8 @@ namespace Woof.SecurityEx {
         /// <param name="organization">Organization.</param>
         /// <param name="rootName">Name of the root certificate.</param>
         /// <param name="password">Password for pfx file, default "woof".</param>
-        /// <returns></returns>
+        /// <param name="leaveFiles">Set true to leave intermediate key, csr, crt, srl files.</param>
+        /// <returns>True if successfull.</returns>
         public static bool CreateSignedHostCertificate(string name, string organization, string rootName, string password = "woof", bool leaveFiles = false) {
             try {
                 var openSslCommands = File.Exists($"{rootName}.pfx")
@@ -75,12 +76,14 @@ namespace Woof.SecurityEx {
                 return result;
                 
             } finally {
-                File.Delete($"{rootName}.key");
-                File.Delete($"{rootName}.crt");
-                File.Delete($"{rootName}.srl");
-                File.Delete($"{name}.key");
-                File.Delete($"{name}.csr");
-                File.Delete($"{name}.crt");
+                if (!leaveFiles) {
+                    File.Delete($"{rootName}.key");
+                    File.Delete($"{rootName}.crt");
+                    File.Delete($"{rootName}.srl");
+                    File.Delete($"{name}.key");
+                    File.Delete($"{name}.csr");
+                    File.Delete($"{name}.crt");
+                }
             }
         }
 
