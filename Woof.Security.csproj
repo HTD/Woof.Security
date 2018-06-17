@@ -3,7 +3,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Woof</RootNamespace>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Authors>Adam Łyskawa, Kamil Marzec</Authors>
+    <Authors>Adam Łyskawa</Authors>
     <Company>CodeDog Ltd.</Company>
     <Description>Windows security, X509 and SSL helpers.</Description>
     <Copyright>(c)2018 by CodeDog Ltd.</Copyright>
