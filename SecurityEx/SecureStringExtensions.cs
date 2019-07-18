@@ -78,7 +78,6 @@ namespace Woof.SecurityEx {
             int c;
             SecureString s = new SecureString();
             while ((c = sr.Read()) >= 0) {
-                var code = sr.BaseStream.ReadByte();
                 if (c == 13) continue; // CR
                 if (c == 10) break; // LF
                 s.AppendChar((char)c);

@@ -106,7 +106,6 @@ namespace Woof.SecurityEx {
             var process = new Process() { StartInfo = psi };
             process.Start();
             process.WaitForExit();
-            var encoding = Encoding.UTF8;
             string errors;
             using (process.StandardError) errors = process.StandardError.ReadToEnd();
             using (process.StandardOutput) output = process.StandardOutput.ReadToEnd();

@@ -76,7 +76,10 @@ namespace Woof.SecurityEx {
         /// <param name="storeName">Store name.</param>
         /// <param name="storeLocation">Store location.</param>
         public static void ImportCertificate(string fileName, string password, StoreName storeName, StoreLocation storeLocation) {
-            var cert = new X509Certificate2(fileName, password, X509KeyStorageFlags.PersistKeySet);
+            var keyStorageFlags =
+                X509KeyStorageFlags.PersistKeySet
+                | (storeLocation == StoreLocation.LocalMachine ? X509KeyStorageFlags.MachineKeySet : X509KeyStorageFlags.UserKeySet);
+            var cert = new X509Certificate2(fileName, password, keyStorageFlags);
             var store = new X509Store(storeName, storeLocation);
             store.Open(OpenFlags.MaxAllowed);
             store.Add(cert);

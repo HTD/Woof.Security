@@ -86,7 +86,7 @@ namespace Woof.SecurityEx {
         /// <param name="logonProvider">The logon provider type.</param>
         /// <returns>Safe token handle.</returns>
         private static NativeMethods.SafeTokenHandle GetIdentity(string user, string domain, string password, LogonType logonType = LogonType.NetworkClearText, LogonProvider logonProvider = LogonProvider.Default) {
-            var status = NativeMethods.LogonUser(user, domain, password, (int)logonType, (int)logonProvider, out NativeMethods.SafeTokenHandle token);
+            NativeMethods.LogonUser(user, domain, password, (int)logonType, (int)logonProvider, out NativeMethods.SafeTokenHandle token);
             return token;
         }
 

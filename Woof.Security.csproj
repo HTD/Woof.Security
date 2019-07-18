@@ -1,8 +1,8 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Woof</RootNamespace>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Adam Łyskawa</Authors>
     <Company>CodeDog Ltd.</Company>
     <Description>Windows security, X509 and SSL helpers.</Description>
@@ -10,8 +10,12 @@
     <PackageLicenseUrl>https://en.wikipedia.org/wiki/MIT_License</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/HTD/Woof.Security</PackageProjectUrl>
     <PackageTags>code codedog dotnet windows system</PackageTags>
-    <PackageReleaseNotes>XML documentation completed.</PackageReleaseNotes>
-    <Version>1.0.1</Version>
+    <PackageReleaseNotes>FIX: Certificate import.
+ADD: Unit tests.</PackageReleaseNotes>
+    <Version>1.0.2</Version>
+    <Product>Woof.Security</Product>
+    <PackageId>Woof.Security</PackageId>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -20,6 +24,11 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DocumentationFile>bin\Release\netstandard2.0\Woof.Security.xml</DocumentationFile>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Woof.Security.Tests\**" />
+    <EmbeddedResource Remove="Woof.Security.Tests\**" />
+    <None Remove="Woof.Security.Tests\**" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="4.5.0" />
     <PackageReference Include="System.Security.Principal.Windows" Version="4.5.0" />
