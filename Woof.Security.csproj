@@ -10,9 +10,8 @@
     <PackageLicenseUrl>https://en.wikipedia.org/wiki/MIT_License</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/HTD/Woof.Security</PackageProjectUrl>
     <PackageTags>code codedog dotnet windows system</PackageTags>
-    <PackageReleaseNotes>FIX: Certificate import.
-ADD: Unit tests.</PackageReleaseNotes>
-    <Version>1.0.2</Version>
+    <PackageReleaseNotes>OpenSSL wrapper rewritten.</PackageReleaseNotes>
+    <Version>2.0.0</Version>
     <Product>Woof.Security</Product>
     <PackageId>Woof.Security</PackageId>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
@@ -25,8 +24,11 @@ ADD: Unit tests.</PackageReleaseNotes>
     <DocumentationFile>bin\Release\netstandard2.0\Woof.Security.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="TrustMe\**" />
     <Compile Remove="Woof.Security.Tests\**" />
+    <EmbeddedResource Remove="TrustMe\**" />
     <EmbeddedResource Remove="Woof.Security.Tests\**" />
+    <None Remove="TrustMe\**" />
     <None Remove="Woof.Security.Tests\**" />
   </ItemGroup>
   <ItemGroup>

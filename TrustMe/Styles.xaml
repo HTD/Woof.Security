@@ -1,0 +1,62 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:TrustMe">
+
+
+
+
+
+
+    <Style TargetType="TextBlock">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="8" />
+    </Style>
+    <Style TargetType="Button">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="8" />
+    </Style>
+    <Style TargetType="TextBox">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Margin" Value="8" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="Foreground" Value="#007acc" />
+    </Style>
+    <Style TargetType="PasswordBox">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Margin" Value="8" />
+        <Setter Property="Padding" Value="8" />
+    </Style>
+    <Style TargetType="local:Installable">
+        <Style.Resources>
+            <Style TargetType="Button">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="8" />
+                <!--<Setter Property="Padding" Value="8" />-->
+            </Style>
+            <Style TargetType="TextBlock">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="Padding" Value="8" />
+                <Setter Property="Foreground" Value="#007acc" />
+            </Style>
+        </Style.Resources>
+    </Style>
+    <Style x:Key="Header" TargetType="TextBlock">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="Background" Value="#bee6fd" />
+        <Setter Property="Foreground" Value="#004455" />
+    </Style>
+    <Style x:Key="Highlight" TargetType="TextBlock">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Margin" Value="8" />
+        <Setter Property="Padding" Value="8" />
+        <Setter Property="Foreground" Value="#007acc" />
+    </Style>
+
+
+
+</ResourceDictionary>

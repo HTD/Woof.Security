@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Woof.Security", "Woof.Security.csproj", "{53AA3BAF-8445-411E-B532-EB689634C361}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Woof.Security.Tests", "Woof.Security.Tests\Woof.Security.Tests.csproj", "{A687D2CD-E774-4032-BF70-5ED3C9039BF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Woof.Security.Tests", "Woof.Security.Tests\Woof.Security.Tests.csproj", "{A687D2CD-E774-4032-BF70-5ED3C9039BF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrustMe", "TrustMe\TrustMe.csproj", "{5042EE1F-92B9-4026-A319-ACDADD413F62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A687D2CD-E774-4032-BF70-5ED3C9039BF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A687D2CD-E774-4032-BF70-5ED3C9039BF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A687D2CD-E774-4032-BF70-5ED3C9039BF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5042EE1F-92B9-4026-A319-ACDADD413F62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5042EE1F-92B9-4026-A319-ACDADD413F62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5042EE1F-92B9-4026-A319-ACDADD413F62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5042EE1F-92B9-4026-A319-ACDADD413F62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

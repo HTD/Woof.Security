@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography.X509Certificates;
+﻿using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Woof.SecurityEx {
 
@@ -40,31 +41,62 @@ namespace Woof.SecurityEx {
         }
 
         /// <summary>
+        /// Gets the root CA certificate.
+        /// </summary>
+        /// <param name="name">Subject's CN.</param>
+        /// <param name="storeLocation">Certificate store location.</param>
+        /// <returns>Root CA certificate.</returns>
+        public static X509Certificate2 GetRootCACertificate(string name, StoreLocation storeLocation = StoreLocation.LocalMachine) {
+            using (var store = new X509Store(StoreName.Root, storeLocation)) {
+                store.Open(OpenFlags.ReadOnly);
+                return store.Certificates.Find(X509FindType.FindBySubjectName, name, true).OfType<X509Certificate2>().FirstOrDefault();
+            }
+        }
+
+        /// <summary>
         /// Gets the X.509 certificate for the specified host name from system and user stores.
         /// </summary>
         /// <param name="hostName">Host name the certificate is issued for.</param>
+        /// <param name="storeLocation">Store location.</param>
         /// <returns>X.509 certificate or null if no matching certificate is found in applicable stores.</returns>
         /// <remarks>The certificate is searched in computer store, then in user store.</remarks>
-        public static X509Certificate2 GetCertificateForHost(string hostName) {
+        public static X509Certificate2 GetCertificateForHost(string hostName, StoreLocation storeLocation = StoreLocation.LocalMachine) {
             if (hostName == null) return null;
             X509Store store = null;
             X509CertificateCollection matches;
             try {
                 var stores = new[] { StoreName.My, StoreName.TrustedPublisher };
                 var locations = new[] { StoreLocation.LocalMachine, StoreLocation.CurrentUser };
-                foreach (var storeLocation in locations)
-                    foreach (var storeName in stores) {
-                        store = new X509Store(storeName, storeLocation);
-                        store.Open(OpenFlags.ReadOnly);
-                        matches = store.Certificates.Find(X509FindType.FindBySubjectName, hostName, true);
-                        if (matches.Count > 0) return matches[0] as X509Certificate2;
-                        store.Close();
-                        store = null;
-                    }
+                foreach (var storeName in stores) {
+                    store = new X509Store(storeName, storeLocation);
+                    store.Open(OpenFlags.ReadOnly);
+                    matches = store.Certificates.Find(X509FindType.FindBySubjectName, hostName, true);
+                    if (matches.Count > 0) return matches[0] as X509Certificate2;
+                    store.Close();
+                    store = null;
+                }
                 return null;
             }
             finally {
                 store?.Close();
+            }
+        }
+
+        /// <summary>
+        /// Gets the X.509 certificate from file.
+        /// </summary>
+        /// <param name="fileName">File name.</param>
+        /// <param name="password">Password, if the certificate file is password protected.</param>
+        /// <param name="keyStorageFlags">Optional key storage flags.</param>
+        /// <returns>Certificate.</returns>
+        public static X509Certificate2 GetCertificateFromFile(string fileName, string password = null, X509KeyStorageFlags keyStorageFlags = default) {
+            var collection = new X509Certificate2Collection { Capacity = 2 }; // at least signing root and site cert.
+            try {
+                collection.Import(fileName, password, keyStorageFlags);
+                return collection.OfType<X509Certificate2>().LastOrDefault(); // can be more than one imported.
+            }
+            finally {
+                collection.Clear();
             }
         }
 

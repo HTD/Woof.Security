@@ -1,0 +1,147 @@
+﻿<Window
+    x:Class="TrustMe.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:TrustMe"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="WOOF: Trust Me!"
+    SizeToContent="WidthAndHeight"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.DataContext>
+        <local:MainVM />
+    </Window.DataContext>
+    <Window.InputBindings>
+        <KeyBinding
+            Key="F5"
+            Command="{Binding}"
+            CommandParameter="Refresh" />
+        <KeyBinding
+            Key="F6"
+            Command="{Binding}"
+            CommandParameter="Save" />
+        <KeyBinding
+            Key="F7"
+            Command="{Binding}"
+            CommandParameter="Load" />
+        <KeyBinding
+            Key="F8"
+            Command="{Binding}"
+            CommandParameter="CertLM" />
+    </Window.InputBindings>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock
+            Grid.Row="0"
+            Grid.ColumnSpan="2"
+            Style="{StaticResource Header}"
+            Text="This tool generates self-signed Root CA and site certificates and installs them on local machine." />
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="0"
+            Text="Target architecture:" />
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="1"
+            Style="{StaticResource Highlight}"
+            Text="{Binding TargetArchitecture}" />
+        <TextBlock
+            Grid.Row="2"
+            Grid.Column="0"
+            Text="OpenSSL:" />
+        <local:Installable
+            Grid.Row="2"
+            Grid.Column="1"
+            Command="{Binding}"
+            CommandParameter="InstallOpenSSL"
+            Value="{Binding OpenSSLVersion}" />
+        <TextBlock
+            Grid.Row="3"
+            Grid.Column="0"
+            Text="Root CA distinguished name or CN:" />
+        <TextBox
+            Grid.Row="3"
+            Grid.Column="1"
+            Text="{Binding RootCA}" />
+        <TextBlock
+            Grid.Row="4"
+            Grid.Column="0"
+            Text="Root CA certificate password:" />
+        <PasswordBox
+            Name="RootCACertPassword"
+            Grid.Row="4"
+            Grid.Column="1" />
+        <TextBlock
+            Grid.Row="5"
+            Grid.Column="0"
+            Text="Site distinguished name or CN:" />
+        <TextBox
+            Grid.Row="5"
+            Grid.Column="1"
+            Text="{Binding Site}" />
+        <TextBlock
+            Grid.Row="6"
+            Grid.Column="0"
+            Text="Site certificate password:" />
+        <PasswordBox
+            Name="SiteCertPassword"
+            Grid.Row="6"
+            Grid.Column="1" />
+        <TextBlock
+            Grid.Row="7"
+            Grid.Column="0"
+            Text="Root CA certificate:" />
+        <local:Installable
+            Grid.Row="7"
+            Grid.Column="1"
+            Command="{Binding}"
+            CommandParameter="InstallRootCACert"
+            IsEnabled="{Binding IsProcessingEnabled}"
+            Value="{Binding RootCACertInfo}" />
+        <TextBlock
+            Grid.Row="8"
+            Grid.Column="0"
+            Text="Site certificate:" />
+        <local:Installable
+            Grid.Row="8"
+            Grid.Column="1"
+            Command="{Binding}"
+            CommandParameter="InstallSiteCert"
+            IsEnabled="{Binding IsSiteProcessingEnabled}"
+            Value="{Binding SiteCertInfo}" />
+        <StackPanel
+            Grid.Row="9"
+            Grid.Column="1"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <Button Command="{Binding}" CommandParameter="Refresh">
+                <TextBlock Text="Refresh (F5)" />
+            </Button>
+            <Button Command="{Binding}" CommandParameter="Save">
+                <TextBlock Text="Save (F6)" />
+            </Button>
+            <Button Command="{Binding}" CommandParameter="Load">
+                <TextBlock Text="Load (F7)" />
+            </Button>
+            <Button Command="{Binding}" CommandParameter="CertLM">
+                <TextBlock Text="Open system certificates (F8) ..." />
+            </Button>
+        </StackPanel>
+    </Grid>
+</Window>

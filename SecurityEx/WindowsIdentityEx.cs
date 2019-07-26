@@ -74,7 +74,13 @@ namespace Woof.SecurityEx {
             string password,
             LogonType logonType = LogonType.NetworkClearText,
             LogonProvider logonProvider = LogonProvider.Default)
-            : base(GetIdentity(user, domain, password, logonType, logonProvider).DangerousGetHandle()) { }
+            : this(userToken: GetIdentity(user, domain, password, logonType, logonProvider)) { }
+
+        /// <summary>
+        /// Creates new <see cref="WindowsIdentity"/> from user token as <see cref="NativeMethods.SafeTokenHandle"/>.
+        /// </summary>
+        /// <param name="userToken">User token obtained from <see cref="GetIdentity(string, string, string, LogonType, LogonProvider)"/> method.</param>
+        private WindowsIdentityEx(NativeMethods.SafeTokenHandle userToken) : base(userToken.DangerousGetHandle()) => UserToken = userToken;
 
         /// <summary>
         /// Attempts to log a user on to the local computer.
@@ -89,6 +95,17 @@ namespace Woof.SecurityEx {
             NativeMethods.LogonUser(user, domain, password, (int)logonType, (int)logonProvider, out NativeMethods.SafeTokenHandle token);
             return token;
         }
+
+        /// <summary>
+        /// Disposes user token.
+        /// </summary>
+        /// <param name="disposing">True on final invocation.</param>
+        protected override void Dispose(bool disposing) {
+            base.Dispose(disposing);
+            if (disposing) UserToken.Dispose();
+        }
+
+        private readonly NativeMethods.SafeTokenHandle UserToken;
 
         /// <summary>
         /// Native methods used by <see cref="WindowsIdentityEx"/>.
