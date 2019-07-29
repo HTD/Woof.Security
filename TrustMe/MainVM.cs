@@ -86,7 +86,7 @@ namespace TrustMe {
                             var dn = new DistinguishedName(RootCA);
                             var options = new OpenSslOptions { Password = RootCACertPassword, LeaveFiles = true };
                             OpenSsl.CreateSelfSignedRootCA(dn, options);
-                            X509.ImportCertificate($"{dn.CN}.pfx", options.Password, StoreName.Root, StoreLocation.LocalMachine);
+                            X509.ImportCertificate(Path.Combine(OpenSsl.OutputDirectory, $"{dn.CN}.pfx"), options.Password, StoreName.Root, StoreLocation.LocalMachine);
                             Execute("Refresh");
                         }
                         catch (Exception x) {
@@ -98,22 +98,29 @@ namespace TrustMe {
                         try {
                             var rootDn = new DistinguishedName(RootCA);
                             var rootCACertFileName = rootDn.CN;
-                            if (!(File.Exists($"{rootCACertFileName}.pfx") || (File.Exists($"{rootCACertFileName}.crt") && File.Exists($"{rootCACertFileName}.key")))) {
+                            var rootPfx = Path.Combine(OpenSsl.OutputDirectory, $"{rootCACertFileName}.pfx");
+                            var rootCrt = Path.Combine(OpenSsl.OutputDirectory, $"{rootCACertFileName}.crt");
+                            var rootKey = Path.Combine(OpenSsl.OutputDirectory, $"{rootCACertFileName}.key");
+                            var crtAndKeyExist = File.Exists(rootCrt) && File.Exists(rootKey);
+                            var pfxExists = File.Exists(rootPfx);
+                            var gotCAPasswd = !String.IsNullOrWhiteSpace(RootCACertPassword);
+                            var gotSitePasswd = !String.IsNullOrWhiteSpace(SiteCertPassword);
+                            if (!pfxExists && !crtAndKeyExist) {
                                 MessageBox.Show("Can't find Root CA certificate file(s).", "WOOF!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                                 return;
                             }
-                            if (String.IsNullOrWhiteSpace(RootCACertPassword) && !(File.Exists($"{rootCACertFileName}.crt") && File.Exists($"{rootCACertFileName}.key"))) {
+                            if (!crtAndKeyExist && !gotCAPasswd) {
                                 MessageBox.Show("Root CA certificate password must be set.", "WOOF!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                                 return;
                             }
-                            if (String.IsNullOrWhiteSpace(SiteCertPassword)) {
+                            if (!gotSitePasswd) {
                                 MessageBox.Show("Site certificate password must be set.", "WOOF!", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                                 return;
                             }
                             var dn = new DistinguishedName(Site);
                             var options = new OpenSslOptions { Password = SiteCertPassword, LeaveFiles = true };
                             OpenSsl.CreateSignedHostCertificate(dn, rootCACertFileName, SiteCertPassword, options);
-                            X509.ImportCertificate($"{dn.CN}.pfx", options.Password, StoreName.My, StoreLocation.LocalMachine);
+                            X509.ImportCertificate(Path.Combine(OpenSsl.OutputDirectory, $"{dn.CN}.pfx"), options.Password, StoreName.My, StoreLocation.LocalMachine);
                             Execute("Refresh");
                         }
                         catch (Exception x) {
