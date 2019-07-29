@@ -14,6 +14,9 @@ namespace TrustMe {
     /// </summary>
     class MainVM : ViewModelBase {
 
+        /// <summary>
+        /// Gets or sets installed OpenSSL version.
+        /// </summary>
         public string OpenSSLVersion {
             get => _OpenSSLVersion;
             set {
@@ -22,10 +25,19 @@ namespace TrustMe {
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether any certificate processing should be enabled.
+        /// </summary>
         public bool IsProcessingEnabled { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the site certificate processing should be enabled.
+        /// </summary>
         public bool IsSiteProcessingEnabled { get; set; }
 
+        /// <summary>
+        /// Gets the root CA certificate info (whatever, currently thumb print).
+        /// </summary>
         public string RootCACertInfo {
             get => _RootCACertInfo;
             set {
@@ -34,6 +46,9 @@ namespace TrustMe {
             }
         }
 
+        /// <summary>
+        /// Gets the site certificate info (whatever, currently thumb print).
+        /// </summary>
         public string SiteCertInfo {
             get => _SiteCertInfo;
             set {
@@ -42,18 +57,34 @@ namespace TrustMe {
             }
         }
 
-
-
+        /// <summary>
+        /// Gets the current executable (and targetted OS) architecture.
+        /// </summary>
         public string TargetArchitecture { get; } = Environment.Is64BitProcess ? "x64" : "x86";
 
+        /// <summary>
+        /// Gets or sets the root CA subject distinguished name.
+        /// </summary>
         public string RootCA { get; set; }
 
+        /// <summary>
+        /// Gets or sets the site subject distinguished name.
+        /// </summary>
         public string Site { get; set; }
 
+        /// <summary>
+        /// Gets the root CA certificate password.
+        /// </summary>
         private string RootCACertPassword => (App.Current.MainWindow as MainWindow).RootCACertPassword.Password;
 
+        /// <summary>
+        /// Gets the site certificate password.
+        /// </summary>
         private string SiteCertPassword => (App.Current.MainWindow as MainWindow).SiteCertPassword.Password;
 
+        /// <summary>
+        /// Initializes the view model, loads the stored settings and executes "Refresh" command.
+        /// </summary>
         public MainVM() {
             RootCA = Settings.RootCA;
             Site = Settings.Site;
@@ -157,7 +188,7 @@ namespace TrustMe {
             var dn = new DistinguishedName(RootCA);
             var cert = X509.GetRootCACertificate(dn.CN);
             if (cert is null) return null;
-            return cert.Thumbprint;
+            return $"[{cert.Thumbprint}] {cert.GetNameInfo(X509NameType.DnsName, false)}";
         }
 
         private string GetSiteCertInfo() {
@@ -165,7 +196,7 @@ namespace TrustMe {
             var dn = new DistinguishedName(Site);
             var cert = X509.GetCertificateForHost(dn.CN);
             if (cert is null) return null;
-            return cert.Thumbprint;
+            return $"[{cert.Thumbprint}] {cert.GetNameInfo(X509NameType.DnsName, false)} (issued by {cert.GetNameInfo(X509NameType.DnsName, true)})";
         }
 
         private void UpdateAvailability() {
