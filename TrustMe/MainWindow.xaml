@@ -6,6 +6,9 @@
     xmlns:local="clr-namespace:TrustMe"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="WOOF: Trust Me!"
+    MinWidth="768"
+    ContentRendered="Window_ContentRendered"
+    ResizeMode="CanResize"
     SizeToContent="WidthAndHeight"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
@@ -33,7 +36,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
-            <ColumnDefinition />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
